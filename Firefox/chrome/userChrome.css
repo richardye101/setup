@@ -6,6 +6,15 @@
     height: 0 !important;
     min-height: 0!important;
 }
+
+#titlebar{
+  -moz-box-ordinal-group: 2; /* Fx <112 compatibility */
+  order: 2;
+  -moz-appearance: none !important;
+  --tabs-navbar-shadow-size: 0px;
+  --uc-menubar-vertical-overlap: 19px; /* for hide_tabs_with_one_tab_w_window_controls.css compatibility */
+}
+
 /* specifically hide tabs */
 #tabbrowser-arrowscrollbox {
     display: none;
@@ -44,6 +53,7 @@
     min-height: 0!important;
     overflow: hidden;
     transition: height .3s .3s !important;
+    visbility: collapse !important
 }
 
 #main-window[titlepreface*="XXX"] #TabsToolbar {
