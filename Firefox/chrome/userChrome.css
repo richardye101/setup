@@ -1,18 +1,18 @@
 /* make the url field BIGGER */
 --urlbar-height: 32px;
 
+:root {
+    --tab-min-height: 0px;    
+}
 /* hide title bar by reducing its height to 0 */
 #titlebar {
     height: 0 !important;
     min-height: 0!important;
 }
 
-#titlebar{
-  -moz-box-ordinal-group: 2; /* Fx <112 compatibility */
-  order: 2;
-  -moz-appearance: none !important;
-  --tabs-navbar-shadow-size: 0px;
-  --uc-menubar-vertical-overlap: 19px; /* for hide_tabs_with_one_tab_w_window_controls.css compatibility */
+/* hide the button to shorten the titlebar */
+#alltabs-button {
+    display: none;
 }
 
 /* specifically hide tabs */
