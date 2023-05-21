@@ -26,3 +26,7 @@ eval $(thefuck --alias)
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/
 autojump.sh
 ``` 
+
+# Wezterm Lua Config
+
+Take the `.wezterm.lua` file, and move it to `$HOME/.config/wezterm/wezterm.lua`, create the folder if needed.
