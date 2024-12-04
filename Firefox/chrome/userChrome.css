@@ -1,31 +1,18 @@
-/* make the url field BIGGER */
---urlbar-height: 32px;
-
-:root {
-    --tab-min-height: 0px;    
-}
-/* hide title bar by reducing its height to 0 */
-#titlebar {
-    height: 0 !important;
-    min-height: 0!important;
+/* Hide tabs toolbar */
+#TabsToolbar { 
+    visibility: collapse !important 
 }
 
-/* hide the button to shorten the titlebar */
-#alltabs-button {
-    display: none;
+/* Move the window controls down and to the right since the tabs toolbar is hidden */
+.titlebar-buttonbox-container{
+  visibility: visible !important;
+  height: 40px !important;
+  margin-left: 70px;
 }
 
-/* specifically hide tabs */
-#tabbrowser-arrowscrollbox {
-    display: none;
-}
-
-/* adding whitespace around url field for better highlight */
-#nav-bar-customization-target {
-    padding: 6px 0 4px 5px;
-}
-#PanelUI-button {
-    padding-left: 5px;
+/* Shift nav bar down */
+#nav-bar{
+  margin-top: 0px;
 }
 
 /* push nav buttons to the right to make space for window controls */
@@ -33,50 +20,7 @@
     padding-left: 78px;
 }
 
-#urlbar[breakout][breakout-extend] > #urlbar-input-container {
-    height: 34px;
-}
-
-/* better separation between sidebar and urlbar */
-#NavigationBar {
-    border-top: 1px solid rgba(0,0,0, 0.15);
-    padding-top: 3px;
-    padding-bottom: 3px;
-}
-
+/* Hide sidebar header */
 #sidebar-header {
     display: none;
-}
-
-#main-window #TabsToolbar {
-    height: 0px !important;
-    min-height: 0!important;
-    overflow: hidden;
-    transition: height .3s .3s !important;
-    visbility: collapse !important
-}
-
-#main-window[titlepreface*="XXX"] #TabsToolbar {
-    height: 0 !important;
-    min-height: 0!important;
-}
-
-#main-window[titlepreface*="XXX"] #tabbrowser-tabs {
-    z-index: 0 !important;
-}
-
-/* sidebery child tab indicators be less obvious */
-.Tab .lvl-wrapper::before {
-    opacity: 0.5;
-}
-
-#urlbar[breakout] {
-    top: 2px!important;
-}
-
-/* push those pesky window controls to the urlbar, where they belong */
-#TabsToolbar .titlebar-buttonbox {
-    position: fixed!important;
-    top: 14px;
-    display: inline;
 }
