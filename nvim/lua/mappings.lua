@@ -6,14 +6,31 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
-map("n", "<S-H>", "0", { desc = "move to beginning of line" })
-map("n", "<S-L>", "<End>", { desc = "move to end of line" })
-map("v", "<S-H>", "0", { desc = "move to beginning of line" })
-map("v", "<S-L>", "<End>", { desc = "move to end of line" })
-map("n", "<S-Q", function()
+map("n", "<S-h>", "0", { desc = "move to beginning of line" })
+map("n", "<S-l>", "<End>", { desc = "move to end of line" })
+map("v", "<S-h>", "0", { desc = "move to beginning of line" })
+map("v", "<S-l>", "<End>", { desc = "move to end of line" })
+map("n", "<S-q", function()
   vim.diagnostic.setqflist()
   vim.cmd("copen")
 end, { desc = "Open quickfix with diagnostics" })
+
+--- for nvchad users, this is in the ~/.config/nvim/lua/mappings.lua file
+
+local unmap = vim.keymap.del
+
+--- This fixes an issue with the vim-tmux-navigator + nvchad in which the base nvchad
+--- mapping were conflicting with vim-tmux-navigator ones.
+unmap("n", "<c-h>")
+unmap("n", "<c-j>")
+unmap("n", "<c-k>")
+unmap("n", "<c-l>")
+map("n", "<c-h>", "<cmd>:TmuxNavigateLeft<cr>")
+map("n", "<c-j>", "<cmd>:TmuxNavigateDown<cr>")
+map("n", "<c-k>", "<cmd>:TmuxNavigateUp<cr>")
+map("n", "<c-l>", "<cmd>:TmuxNavigateRight<cr>")
+map("n", "<c-\\>", "<cmd>:TmuxNavigatePrevious<cr>")
+
 -- require("nvchad.term").toggle { pos = "sp", id = "xz" }
 -- require("nvchad.term").toggle { pos = "float", id = "fa", cmd ='lazygit' }
 -- require("nvchad.term").toggle { pos = "vsp", id = "floo", size = 0.3 }
