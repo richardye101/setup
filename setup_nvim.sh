@@ -2,4 +2,5 @@
 
 brew update && brew install luarocks
 # setup nvim
-cp -r nvim ~/.config
+rsync -av nvim ~/.config
+
