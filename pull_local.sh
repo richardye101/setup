@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cp -r ~/.config/nvim .
-cp -r ~/.config/tmux .
+rsync -av --exclude ".git"  ~/.config/nvim .
+rsync -av --exclude ".git"  ~/.config/tmux .
