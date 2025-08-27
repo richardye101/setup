@@ -21,10 +21,10 @@ local options = {
 
     highlight = {
         enable = true,
+        additional_vim_regex_highlighting = false,
         use_languagetree = true,
     },
 
     indent = { enable = true },
 }
-
-return options
+require("nvim-treesitter.configs").setup(options)

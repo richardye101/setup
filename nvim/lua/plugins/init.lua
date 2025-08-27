@@ -12,6 +12,7 @@ return {
         end,
     },
     -- for syntax highlighting
+
     {
         "nvim-treesitter/nvim-treesitter",
         event = { "BufReadPre", "BufNewFile" },
@@ -19,6 +20,7 @@ return {
             require "configs.treesitter"
         end,
     },
+
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
@@ -138,17 +140,6 @@ return {
             },
         },
     },
-    -- python debugging
-    -- {
-    --   "mfussenegger/nvim-dap",
-    -- },
-    -- {
-    --   "mfussenegger/nvim-dap-python",
-    --   ft = "python",
-    --   dependencies = {
-    --     "mfussenegger/nvim-dap",
-    --   }
-    -- },
     -- test new blink
     -- { import = "nvchad.blink.lazyspec" },
 
@@ -160,18 +151,5 @@ return {
     --     return require "configs.none-ls"
     --   end,
     --   requires = { "nvim-lua/plenary.nvim" },
-    -- },
-    -- {
-    --   "stevearc/conform.nvim",
-    --   -- event = 'BufWritePre', -- uncomment for format on save
-    --   opts = require "configs.conform",
-    -- },
-    --
-    -- -- These are some examples, uncomment them if you want to see them work!
-    -- {
-    --   "neovim/nvim-lspconfig",
-    --   config = function()
-    --     require "configs.lspconfig"
-    --   end,
     -- },
 }

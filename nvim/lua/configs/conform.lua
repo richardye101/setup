@@ -5,7 +5,7 @@ local options = {
         cpp = { "clang-format" },
         -- go = { "gofumpt", "goimports-reviser", "golines" },
         -- haskell = { "fourmolu", "stylish-haskell" },
-        python = { "isort", "black" },
+        python = { "black", "isort" },
     },
 
     formatters = {
@@ -51,12 +51,12 @@ local options = {
                 "80",
             },
         },
-        isort = {
-            prepend_args = {
-                "--profile",
-                "black",
-            },
-        },
+        -- isort = {
+        --     prepend_args = {
+        --         "--profile",
+        --         "black",
+        --     },
+        -- },
     },
 
     format_on_save = {
