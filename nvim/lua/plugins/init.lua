@@ -19,7 +19,6 @@ return {
             require "configs.treesitter"
         end,
     },
-
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
@@ -153,15 +152,6 @@ return {
     -- test new blink
     -- { import = "nvchad.blink.lazyspec" },
 
-    -- {
-    -- 	"nvim-treesitter/nvim-treesitter",
-    -- 	opts = {
-    -- 		ensure_installed = {
-    -- 			"vim", "lua", "vimdoc",
-    --      "html", "css"
-    -- 		},
-    -- 	},
-    -- },
     -- For linting and code formatting
     -- {
     --   "nvimtools/none-ls.nvim",
