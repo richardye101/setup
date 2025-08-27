@@ -5,7 +5,9 @@ local options = {
         cpp = { "clang-format" },
         -- go = { "gofumpt", "goimports-reviser", "golines" },
         -- haskell = { "fourmolu", "stylish-haskell" },
+        markdown = { "prettierd" },
         python = { "black", "isort" },
+        toml = { "pyproject-fmt" },
     },
 
     formatters = {
@@ -57,6 +59,13 @@ local options = {
         --         "black",
         --     },
         -- },
+        -- Markdown
+        prettierd = {
+            prepend_args = {
+                "--print-width",
+                "80",
+            },
+        },
     },
 
     format_on_save = {
