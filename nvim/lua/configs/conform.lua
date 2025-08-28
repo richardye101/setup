@@ -6,7 +6,7 @@ local options = {
         -- go = { "gofumpt", "goimports-reviser", "golines" },
         -- haskell = { "fourmolu", "stylish-haskell" },
         markdown = { "prettierd" },
-        python = { "black", "isort" },
+        python = { "black" }, -- "isort", stop_after_first = true },
         toml = { "pyproject-fmt" },
     },
 
