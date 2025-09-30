@@ -18,6 +18,10 @@ lint.linters.luacheck.args = {
     "-",
 }
 
+lint.linters.mypy.args = {
+    "--check-untyped-defs",
+}
+
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
     callback = function()
         lint.try_lint()
