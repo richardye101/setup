@@ -8,8 +8,10 @@ There are two things to setup for firefox:
 1. Download the `chrome` folder
 2. Navigate to `about:support` and Ctrl+F for "Profile Folder"
 3. Open the profile folder and paste the downloaded `chrome` folder into the "Profile Folder"
-4. Navigate to `about:config`, search for userprof, and switch `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`
-	- Instructions from [this website](https://www.userchrome.org/how-create-userchrome-css.html)
+4. Navigate to `about:config`:
+    - search for userprof, and switch `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`
+    - switch `layout.css.video-dynamic-range.allows-high` to `false`
+    - Instructions from [this website](https://www.userchrome.org/how-create-userchrome-css.html)
 5. Restart Firefox
 
 ## Sidebery Setup

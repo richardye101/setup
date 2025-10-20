@@ -15,6 +15,7 @@ local options = {
         ["clang-format"] = {
             prepend_args = {
                 "-style={ \
+                ColumnLimit: 120, \
                 IndentWidth: 4, \
                 TabWidth: 4, \
                 UseTab: Never, \
