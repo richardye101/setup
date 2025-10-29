@@ -11,8 +11,8 @@ map("n", "<S-l>", "<End>", { desc = "move to end of line" })
 map("v", "<S-h>", "0", { desc = "move to beginning of line" })
 map("v", "<S-l>", "<End>", { desc = "move to end of line" })
 map("n", "<S-q>", function()
-  vim.diagnostic.setqflist()
-  vim.cmd("copen")
+    vim.diagnostic.setqflist()
+    vim.cmd "copen"
 end, { desc = "Open quickfix with diagnostics" })
 
 --- for nvchad users, this is in the ~/.config/nvim/lua/mappings.lua file
@@ -31,6 +31,18 @@ map("n", "<c-k>", "<cmd>:TmuxNavigateUp<cr>")
 map("n", "<c-l>", "<cmd>:TmuxNavigateRight<cr>")
 map("n", "<c-\\>", "<cmd>:TmuxNavigatePrevious<cr>")
 
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>Ao",
+    ":AiderOpen<CR>",
+    { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>Am",
+    ":AiderAddModifiedFiles<CR>",
+    { noremap = true, silent = true }
+)
 -- require("nvchad.term").toggle { pos = "sp", id = "xz" }
 -- require("nvchad.term").toggle { pos = "float", id = "fa", cmd ='lazygit' }
 -- require("nvchad.term").toggle { pos = "vsp", id = "floo", size = 0.3 }
