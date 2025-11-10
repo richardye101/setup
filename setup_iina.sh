@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# setup tmux
+# setup iina configs 
 if [ ! -d "$HOME/Library/Application\ Support/com.colliderli.iina" ]; then
   echo "IINA directory doesn't exist, installing iina"
   brew install --cask iina
