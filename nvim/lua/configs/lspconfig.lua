@@ -10,7 +10,11 @@
 local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
-
+-- add folding capability
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true,
+}
 vim.lsp.config["pyright"] = {
     on_attach = on_attach,
     on_init = on_init,
@@ -18,8 +22,11 @@ vim.lsp.config["pyright"] = {
 
     settings = {
         python = {
+            pythonPath = ".venv/bin/python", -- Directly point to the Python interpreter
             analysis = {
                 typeCheckingMode = "off", -- Disable type checking diagnostics
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
             },
         },
     },
@@ -68,10 +75,24 @@ vim.lsp.config["buf_ls"] = {
 
     settings = {},
 }
+vim.lsp.config["lemminx"] = {
+    on_attach = on_attach,
+    on_init = on_init,
+    capabilities = capabilities,
+
+    settings = {
+        xml = {
+            server = {
+                workDir = "~/.cache/lemminx",
+            },
+        },
+    },
+}
 vim.lsp.enable "pyright"
 vim.lsp.enable "clangd"
 vim.lsp.enable "lua_ls"
 vim.lsp.enable "buf_ls"
+vim.lsp.enable "lemminx"
 
 -- local lspconfig = vim.lsp.config "lspconfig"
 --
