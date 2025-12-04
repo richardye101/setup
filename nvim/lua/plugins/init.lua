@@ -94,6 +94,10 @@ return {
     },
     {
         "mfussenegger/nvim-dap",
+        dependencies = {
+            "mfussenegger/nvim-dap-python",
+            "theHamsta/nvim-dap-virtual-text",
+        },
         config = function()
             require "configs.dap"
         end,

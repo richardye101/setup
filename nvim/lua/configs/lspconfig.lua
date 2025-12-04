@@ -17,7 +17,20 @@ capabilities.textDocument.foldingRange = {
 }
 vim.lsp.config["pyright"] = {
     on_attach = on_attach,
-    on_init = on_init,
+    on_init = function(client, _)
+        -- Dynamically find and set the venv path
+        local venv = client.config.root_dir .. "/.venv/bin/python"
+        if vim.fn.filereadable(venv) == 1 then
+            client.config.settings.python.pythonPath = venv
+            client.notify(
+                "workspace/didChangeConfiguration",
+                { settings = client.config.settings }
+            )
+        end
+        if on_init then
+            on_init(client, _)
+        end
+    end,
     capabilities = capabilities,
 
     settings = {

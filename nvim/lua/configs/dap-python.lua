@@ -1,5 +1,5 @@
-local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
-require("dap-python").setup(path)
+-- local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+require("dap-python").setup "uv"
 
 local map = vim.keymap.set
 
