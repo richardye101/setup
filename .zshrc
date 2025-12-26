@@ -1,9 +1,9 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-source terminal-config/powerlevel10k/powerlevel10k.zsh-theme
-source terminal-config/zsh-autosuggestions/zsh-autosuggestions.zsh
-source terminal-config/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/Repos/setup/terminal-config/powerlevel10k/powerlevel10k.zsh-theme
+source ~/Repos/setup/terminal-config/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/Repos/setup/terminal-config/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # cd ~/
 bindkey "\e[1;3D" backward-word
@@ -81,5 +81,7 @@ export PATH="/Library/TeX/texbin:$PATH"
 # so that when i ssh into machines, they don't see `xterm-ghostty` since they may not recognize it.
 export TERM=xterm-256color
 
-. "$HOME/.local/bin/env"
+# . "$HOME/.local/bin/env"
 
+# add posgresql to path, homebrew doesn't actually do it because there could be other postgresql versions
+export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"

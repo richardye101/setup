@@ -12,6 +12,7 @@ local options = {
         "markdown",
         "printf",
         "python",
+        "svelte",
         "toml",
         "typescript",
         "vim",

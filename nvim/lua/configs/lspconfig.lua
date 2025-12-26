@@ -7,6 +7,11 @@
 
 -- read :h vim.lsp.config for changing options of lsp servers
 
+-- ########### USE THIS TO FIGURE OUT HOW TO SETUP LSP's ####################
+-- :help lspconfig-all
+-- search for the lsp
+-- ##########################################################################
+
 local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
@@ -15,6 +20,7 @@ capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
 }
+
 vim.lsp.config["pyright"] = {
     on_attach = on_attach,
     on_init = function(client, _)
@@ -81,6 +87,7 @@ vim.lsp.config["lua_ls"] = {
     },
 }
 
+-- protobuf
 vim.lsp.config["buf_ls"] = {
     on_attach = on_attach,
     on_init = on_init,
@@ -88,6 +95,8 @@ vim.lsp.config["buf_ls"] = {
 
     settings = {},
 }
+
+-- XML
 vim.lsp.config["lemminx"] = {
     on_attach = on_attach,
     on_init = on_init,
@@ -101,11 +110,41 @@ vim.lsp.config["lemminx"] = {
         },
     },
 }
+
+-- js/ts
+local base_on_attach = vim.lsp.config.eslint.on_attach
+vim.lsp.config("eslint", {
+    on_attach = function(client, bufnr)
+        if not base_on_attach then
+            return
+        end
+
+        base_on_attach(client, bufnr)
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            command = "LspEslintFixAll",
+        })
+    end,
+})
+
+-- svelte
+-- vim.lsp.config["svelte"] = {
+--     on_attach = on_attach,
+--     on_init = on_init,
+--     capabilities = capabilities,
+--
+--     settings = {
+--         svelte = {},
+--     },
+-- }
+
 vim.lsp.enable "pyright"
 vim.lsp.enable "clangd"
 vim.lsp.enable "lua_ls"
 vim.lsp.enable "buf_ls"
 vim.lsp.enable "lemminx"
+vim.lsp.enable "eslint"
+-- vim.lsp.enable "svelte"
 
 -- local lspconfig = vim.lsp.config "lspconfig"
 --

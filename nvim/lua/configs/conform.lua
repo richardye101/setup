@@ -8,6 +8,13 @@ local options = {
         markdown = { "prettier" },
         python = { "black" }, -- "isort", stop_after_first = true },
         toml = { "pyproject-fmt" },
+        javascript = { "prettier" },
+        typescript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescriptreact = { "prettier" },
+        css = { "prettier" },
+        html = { "prettier" },
+        svelte = { "prettier" },
     },
 
     formatters = {

@@ -4,10 +4,7 @@ return {
         lazy = false,
         -- tag = "v2.15", -- uncomment to pin to a specific release
         init = function()
-            -- VimTeX configuration goes here, e.g. zathura (linux)
-            vim.g.vimtex_view_method = "skim"
-            -- Compiler (latexmk is default and recommended)
-            vim.g.vimtex_compiler_method = "latexmk"
+            require "configs.vimtex"
         end,
     },
     {
