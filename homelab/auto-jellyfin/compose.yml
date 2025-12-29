@@ -1,0 +1,106 @@
+services:
+  jellyfin:
+    image: ghcr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./jellyfin:/config
+      - /jellyfin:/media
+    ports:
+      - 8096:8096
+    restart: unless-stopped
+  gluetun:
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - proxy_net
+    ports:
+      - 8888:8888/tcp # HTTP proxy
+      - 8388:8388/tcp # Shadowsocks
+      - 8388:8388/udp # Shadowsocks
+      - 8080:8080 # qbittorrent
+    volumes:
+      - ./gluetun:/gluetun
+    environment:
+      # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
+      - PUID=1000
+      - PGID=1000
+      - VPN_SERVICE_PROVIDER=surfshark
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=2KKRcTko16Sov4fzZ5bKRuQHIQnWSL4SLKOq+1FIjF0=
+      - WIREGUARD_ADDRESSES=10.14.0.2/16
+      - SERVER_COUNTRIES=Canada
+  qbittorrent:
+    image: ghcr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8080
+    volumes:
+      - ./qbittorrent:/config
+      - /downloaded_content:/downloads
+    network_mode: service:gluetun
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - ./prowlarr:/config
+    networks:
+      - proxy_net
+    ports:
+      - 9696:9696 # prowlarr
+    restart: unless-stopped
+  tor:
+    image: dperson/torproxy
+    container_name: tor
+    networks:
+      - proxy_net
+    ports:
+      - 9050:9050
+    restart: unless-stopped
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=EST
+    volumes:
+      - ./sonarr:/config
+      - /jellyfin/tv:/tv
+      - /downloaded_content:/downloads
+    networks:
+      - proxy_net
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=EST
+    volumes:
+      - ./radarr:/config
+      - /jellyfin/movies:/movies
+      - /downloaded_content:/downloads
+    networks:
+      - proxy_net
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+networks:
+  proxy_net:
+    driver: bridge
