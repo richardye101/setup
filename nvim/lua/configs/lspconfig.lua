@@ -112,39 +112,62 @@ vim.lsp.config["lemminx"] = {
 }
 
 -- js/ts
-local base_on_attach = vim.lsp.config.eslint.on_attach
-vim.lsp.config("eslint", {
-    on_attach = function(client, bufnr)
-        if not base_on_attach then
-            return
-        end
-
-        base_on_attach(client, bufnr)
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            command = "LspEslintFixAll",
-        })
-    end,
-})
+-- local base_on_attach = vim.lsp.config.eslint.on_attach
+-- vim.lsp.config("eslint", {
+--     on_attach = function(client, bufnr)
+--         if not base_on_attach then
+--             return
+--         end
+--
+--         base_on_attach(client, bufnr)
+--         vim.api.nvim_create_autocmd("BufWritePre", {
+--             buffer = bufnr,
+--             command = "LspEslintFixAll",
+--         })
+--     end,
+-- })
+local emmet_capabilities = capabilities
+emmet_capabilities.textDocument.completion.completionItem.snippetSupport = true
+vim.lsp.config["emmet_language_server"] = {
+    on_attach = on_attach,
+    on_init = on_init,
+    capabilities = capabilities,
+    root_markers = { "package.json" },
+    filetypes = {
+        "css",
+        "eruby",
+        "html",
+        "javascript",
+        "javascriptreact",
+        "less",
+        "sass",
+        "scss",
+        "pug",
+        "typescript", -- Optional, if you want Emmet in plain .ts files
+        "typescriptreact", -- Essential for .tsx files
+        "vue",
+        "svelte",
+    },
+    settings = {},
+}
 
 -- svelte
--- vim.lsp.config["svelte"] = {
---     on_attach = on_attach,
---     on_init = on_init,
---     capabilities = capabilities,
---
---     settings = {
---         svelte = {},
---     },
--- }
+vim.lsp.config["svelte"] = {
+    on_attach = on_attach,
+    on_init = on_init,
+    capabilities = capabilities,
+
+    settings = {},
+}
 
 vim.lsp.enable "pyright"
 vim.lsp.enable "clangd"
 vim.lsp.enable "lua_ls"
 vim.lsp.enable "buf_ls"
 vim.lsp.enable "lemminx"
-vim.lsp.enable "eslint"
--- vim.lsp.enable "svelte"
+-- vim.lsp.enable "eslint"
+vim.lsp.enable "emmet_language_server"
+vim.lsp.enable "svelte"
 
 -- local lspconfig = vim.lsp.config "lspconfig"
 --
