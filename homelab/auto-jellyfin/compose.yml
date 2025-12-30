@@ -1,4 +1,27 @@
 services:
+  jellyseerr:
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    init: true
+    container_name: jellyseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - LOG_LEVEL=debug
+      - TZ=Asia/Tashkent
+      - PORT=5055 #optional
+    networks:
+      - proxy_net
+    ports:
+      - 5055:5055
+    volumes:
+      - /jellyfin/jellyseer/config:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
   jellyfin:
     image: ghcr.io/linuxserver/jellyfin
     container_name: jellyfin
@@ -7,7 +30,10 @@ services:
       - PGID=1000
     volumes:
       - ./jellyfin:/config
+      - ./jellyfin/index.html:/usr/share/jellyfin/web/index.html
       - /jellyfin:/media
+    networks:
+      - proxy_net
     ports:
       - 8096:8096
     restart: unless-stopped
