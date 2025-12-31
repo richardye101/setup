@@ -146,3 +146,7 @@ This is just a general guide to how I would use this, not a rule set. I found th
 2. You can monitor the shows and movies that have been added through Sonarr (shows) and Radarr (movies) through their web interfaces. YOu can monitor the torrents being downloaded through the qbittorrent web ui.
 3. Open Jellyfin on the viewing device (TV app, or client computer) and you should see the requested media appear. It may take a minute to completely sync.
 4. And thats it!
+
+# Jellyfin on Samsung Tizen TV
+
+I used this repo to install Jellyfin on my samsung tv: [https://github.com/PatrickSt1991/Samsung-Jellyfin-Installer.git](https://github.com/PatrickSt1991/Samsung-Jellyfin-Installer.git)
