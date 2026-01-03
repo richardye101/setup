@@ -109,6 +109,8 @@ sudo wg-quick up wg0
 [Interface]
 PrivateKey = <PREPOPULATED-PRIVATE-KEY>
 Address = 10.0.0.2/8 # replace the 2 with any number between 3-255 for additional clients
+# needed so DNS requests look as if they're coming from the home network. I'm running pihole on the same server i'm connecting to, so I'm using it's actual IP through wireguard. Since I'm running pihole on the same server as wireguard, i gave it 10.0.0.1
+DNS = <ROUTER-IP-ADDRESS/PIHOLE-DNS-SERVER-ADDRESS>
 
 [Peer]
 PublicKey = <PUBLICKEY-SERVER>
@@ -151,6 +153,8 @@ sudo wg-quick up wg0
 [Interface]
 PrivateKey = <PRIVATEKEY-IPHONE>
 Address = 10.0.0.3/8
+# needed so DNS requests look as if they're coming from the home network. I'm running pihole on the same server i'm connecting to, so I'm using it's actual IP through wireguard. Since I'm running pihole on the same server as wireguard, i gave it 10.0.0.1
+DNS = <ROUTER-IP-ADDRESS/PIHOLE-DNS-SERVER-ADDRESS>
 
 [Peer]
 PublicKey = <PUBLICKEY-SERVER>
@@ -193,8 +197,9 @@ You get the drill at this point I think:
 ```
 [Interface]
 PrivateKey = <PRIVATEKEY-CLIENT>
-Address = 10.0.0.4/8
-SaveConfig = true
+Address = 10.0.0.4/32
+# needed so DNS requests look as if they're coming from the home network. I'm running pihole on the same server i'm connecting to, so I'm using it's actual IP through wireguard. Since I'm running pihole on the same server as wireguard, i gave it 10.0.0.1
+DNS = <ROUTER-IP-ADDRESS/PIHOLE-DNS-SERVER-ADDRESS>
 
 [Peer]
 PublicKey = <PUBLICKEY-SERVER>

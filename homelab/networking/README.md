@@ -27,7 +27,7 @@ In the `compose.yaml` file, Pihole exposes the following ports, which are the de
 That means that if we can point the client machine to the computer/server running the Pihole DNS, it could point the client to the correct destination.
 
 Within Pihole, we can goto `Settings > Local DNS Records` and create the links between a requested Domain and the IP we want to redirect to.
-![pihole-dns.png](pihole-dns.png)
+![attachments/pihole-dns.png](pihole-dns.png)
 
 Here, we've assigned the domain `home.arpa` to the IP `192.168.18.29`. This IP is a local address, (192.168.x.x is a set of addresses reserved for private LAN's, they only point to devices connected to your home router), and when a browser tries to reach `http://home.arpa`, it will be directed to that device.
 
@@ -112,7 +112,7 @@ Client/your machine --http://jellyfin.home.arpa/--> Pihole DNS (10.0.0.1:53) --S
 
 ## Setup Instructions
 
-- Ensure the client config has the line:
+- Ensure each WIreGuard client config has the line:
 
 ```
 [INTERFACE]
