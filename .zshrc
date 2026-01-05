@@ -1,6 +1,9 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 source ~/Repos/setup/terminal-config/powerlevel10k/powerlevel10k.zsh-theme
 source ~/Repos/setup/terminal-config/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/Repos/setup/terminal-config/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -10,13 +13,6 @@ bindkey "\e[1;3D" backward-word
 bindkey "\e[1;3C" forward-word
 
 export JAVA_HOME=/opt/homebrew/Cellar/openjdk/20.0.1/libexec/openjdk.jdk/Contents/Home
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
