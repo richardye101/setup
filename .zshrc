@@ -64,9 +64,6 @@ source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 
 source "$HOME/.cargo/env"
 
-setopt COMBINING_CHARS
-export OPENAI_API_KEY=''
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" # This loads nvm
 [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
@@ -81,3 +78,8 @@ export TERM=xterm-256color
 
 # add posgresql to path, homebrew doesn't actually do it because there could be other postgresql versions
 export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
+
+
+#### Work related items
+setopt COMBINING_CHARS
+export OPENAI_API_KEY=''
