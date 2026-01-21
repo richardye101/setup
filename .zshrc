@@ -4,6 +4,7 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
 source ~/Repos/setup/terminal-config/powerlevel10k/powerlevel10k.zsh-theme
 source ~/Repos/setup/terminal-config/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/Repos/setup/terminal-config/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -77,7 +78,8 @@ export TERM=xterm-256color
 # . "$HOME/.local/bin/env"
 
 # add posgresql to path, homebrew doesn't actually do it because there could be other postgresql versions
-export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
+# export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
+export PATH="/Users/richardye/.local/bin:$PATH"
 
 
 #### Work related items

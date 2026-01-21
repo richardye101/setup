@@ -30,6 +30,11 @@ map("n", "<c-j>", "<cmd>:TmuxNavigateDown<cr>")
 map("n", "<c-k>", "<cmd>:TmuxNavigateUp<cr>")
 map("n", "<c-l>", "<cmd>:TmuxNavigateRight<cr>")
 map("n", "<c-\\>", "<cmd>:TmuxNavigatePrevious<cr>")
+-- Navigate from terminal windows to Nvim buffers and windows
+map("t", "<c-h>", "<C-\\><C-n><C-w>h")
+map("t", "<c-j>", "<C-\\><C-n><C-w>j")
+map("t", "<c-k>", "<C-\\><C-n><C-w>k")
+map("t", "<c-l>", "<C-\\><C-n><C-w>l")
 
 vim.api.nvim_set_keymap(
     "n",
