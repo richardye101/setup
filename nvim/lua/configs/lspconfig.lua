@@ -28,7 +28,7 @@ vim.lsp.config["pyright"] = {
         local venv = client.config.root_dir .. "/.venv/bin/python"
         if vim.fn.filereadable(venv) == 1 then
             client.config.settings.python.pythonPath = venv
-            client.notify(
+            client:notify(
                 "workspace/didChangeConfiguration",
                 { settings = client.config.settings }
             )

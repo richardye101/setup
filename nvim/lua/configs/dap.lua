@@ -13,3 +13,7 @@ map(
     "<cmd> DapContinue <CR>",
     { desc = "Start or continue DAP" }
 )
+
+map("n", "<leader>di", "<cmd> DapStepInto <CR>", { desc = "DAP Step Into" })
+map("n", "<leader>do", "<cmd> DapStepOver <CR>", { desc = "DAP Step Over" })
+map("n", "<leader>dO", "<cmd> DapStepOut <CR>", { desc = "DAP Step Out" })

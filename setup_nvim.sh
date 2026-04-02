@@ -1,5 +1,6 @@
 #!/bin/bash
 # setup nvim
+brew install npm
 rsync -av nvim ~/.config
 
 # setup latex packages for vimtex

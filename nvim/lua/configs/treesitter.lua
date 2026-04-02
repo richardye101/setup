@@ -1,4 +1,4 @@
-local options = {
+require("nvim-treesitter").setup {
     ensure_installed = {
         "bash",
         "c",
@@ -19,13 +19,4 @@ local options = {
         "vimdoc",
         "yaml",
     },
-
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-        use_languagetree = true,
-    },
-
-    indent = { enable = true },
 }
-require("nvim-treesitter.configs").setup(options)

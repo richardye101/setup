@@ -6,7 +6,7 @@ local options = {
         -- go = { "gofumpt", "goimports-reviser", "golines" },
         -- haskell = { "fourmolu", "stylish-haskell" },
         markdown = { "prettier" },
-        python = { "black" }, -- "isort", stop_after_first = true },
+        python = { "ruff_format" }, -- "isort", stop_after_first = true },
         toml = { "pyproject-fmt" },
         javascript = { "prettier" },
         typescript = { "prettier" },
@@ -54,13 +54,14 @@ local options = {
             },
         },
         -- Python
-        black = {
-            prepend_args = {
-                "--fast",
-                "--line-length",
-                "120",
-            },
-        },
+        -- black = {
+        --     prepend_args = {
+        --         "--fast",
+        --         "--line-length",
+        --         "120",
+        --     },
+        -- },
+        ruff = {},
         -- isort = {
         --     prepend_args = {
         --         "--profile",

@@ -78,9 +78,8 @@ export TERM=xterm-256color
 # . "$HOME/.local/bin/env"
 
 # add posgresql to path, homebrew doesn't actually do it because there could be other postgresql versions
-# export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/Users/richardye/.local/bin:$PATH"
-
 
 #### Work related items
 setopt COMBINING_CHARS
