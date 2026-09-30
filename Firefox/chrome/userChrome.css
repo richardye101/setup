@@ -1,6 +1,6 @@
 /* Hide tabs toolbar */
-#TabsToolbar { 
-    visibility: collapse !important 
+#TabsToolbar {
+    visibility: collapse !important
 }
 
 /* Move the window controls down and to the right since the tabs toolbar is hidden */
@@ -23,4 +23,41 @@
 /* Hide sidebar header */
 #sidebar-header {
     display: none;
+}
+
+/* --- Firefox 157 sidebar revamp fixes --- */
+
+/* The extension panel's own header (chevron + close X). It lives in
+ * webext-panels.xhtml, not browser.xhtml, so #sidebar-header does not match it.
+ * Hiding it also removes the tall blank strip above the extension's content. */
+#sidebar-panel-header {
+    display: none !important;
+}
+
+/* Square off the sidebar box: sidebar.css gives #sidebar a radius, outline and
+ * drop shadow under @media -moz-pref("sidebar.revamp"). */
+#sidebar {
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Square off the content area's corner that faces the sidebar. */
+#tabbrowser-tabpanels .browserContainer {
+  --content-area-start-radius: 0 !important;
+}
+
+/* Close the gap between sidebar and page.
+ * ponytail: splitter left at 1px so it's still draggable; 0 makes resizing
+ * impossible. Widen it back if grabbing it gets annoying. */
+#sidebar-splitter {
+  --splitter-width: 1px !important;
+  width: 1px !important;
+  min-width: 1px !important;
+  margin-inline: 0 !important;
+}
+#sidebar-box,
+#sidebar-container {
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
 }

@@ -5,3 +5,4 @@ rsync -av --exclude ".git"  ~/.config/nvim .
 rsync -av --exclude ".git"  ~/.config/tmux .
 rsync -av --exclude ".git"  ~/Library/Application\ Support/com.colliderli.iina/input_conf/ ./iina/
 rsync -av ~/.zshrc .
+rsync -av ~/Library/Application\ Support/Firefox/Profiles/*.default-release*/chrome/ ./Firefox/chrome/
