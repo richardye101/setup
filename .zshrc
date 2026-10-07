@@ -1,10 +1,6 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 source ~/Repos/setup/terminal-config/powerlevel10k/powerlevel10k.zsh-theme
 source ~/Repos/setup/terminal-config/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/Repos/setup/terminal-config/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -14,6 +10,13 @@ bindkey "\e[1;3D" backward-word
 bindkey "\e[1;3C" forward-word
 
 export JAVA_HOME=/opt/homebrew/Cellar/openjdk/20.0.1/libexec/openjdk.jdk/Contents/Home
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -65,6 +68,9 @@ source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 
 source "$HOME/.cargo/env"
 
+setopt COMBINING_CHARS
+export OPENAI_API_KEY=''
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" # This loads nvm
 [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
@@ -78,9 +84,4 @@ export TERM=xterm-256color
 # . "$HOME/.local/bin/env"
 
 # add posgresql to path, homebrew doesn't actually do it because there could be other postgresql versions
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/Users/richardye/.local/bin:$PATH"
-
-#### Work related items
-setopt COMBINING_CHARS
-export OPENAI_API_KEY=''
+export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"

@@ -3,21 +3,16 @@
     visibility: collapse !important
 }
 
-/* Move the window controls down and to the right since the tabs toolbar is hidden */
-.titlebar-buttonbox-container{
-  visibility: visible !important;
-  height: 40px !important;
-  margin-left: 70px;
-}
-
-/* Shift nav bar down */
-#nav-bar{
-  margin-top: 0px;
-}
-
-/* push nav buttons to the right to make space for window controls */
-#nav-bar-customization-target {
-    padding-left: 78px;
+/* Window controls: Firefox keeps a second copy of the traffic-light box in
+ * #nav-bar and hides it unless it decides the tab strip is hidden
+ * (browser-shared.css: `#navigator-toolbox:not([tabs-hidden]) > #nav-bar >
+ * .titlebar-buttonbox-container { display: none }`). Collapsing #TabsToolbar
+ * via CSS doesn't set that attribute, so force the nav-bar copy on. On macOS
+ * it has `order: -1`, so it sits first in the bar and reserves its own space —
+ * no manual margin/padding needed. (The old trick of un-hiding the copy inside
+ * the collapsed #TabsToolbar stopped working in FF157.) */
+#navigator-toolbox > #nav-bar > .titlebar-buttonbox-container {
+  display: flex !important;
 }
 
 /* Hide sidebar header */

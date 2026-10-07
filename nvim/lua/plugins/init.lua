@@ -62,10 +62,15 @@ return {
 
     {
         "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            require "configs.treesitter"
-        end,
+        branch = "main",
+        lazy = false,
+        opts = {
+            ensure_installed = {
+                "bash", "c", "cmake", "cpp", "fish", "javascript", "lua", "luadoc",
+                "make", "markdown", "markdown_inline", "printf", "python", "svelte",
+                "toml", "typescript", "vim", "vimdoc", "yaml",
+            },
+        },
     },
     {
         "mfussenegger/nvim-lint",
