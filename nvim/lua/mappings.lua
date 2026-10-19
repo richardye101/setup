@@ -36,18 +36,6 @@ map("t", "<c-j>", "<C-\\><C-n><C-w>j")
 map("t", "<c-k>", "<C-\\><C-n><C-w>k")
 map("t", "<c-l>", "<C-\\><C-n><C-w>l")
 
-vim.api.nvim_set_keymap(
-    "n",
-    "<leader>Ao",
-    ":AiderOpen<CR>",
-    { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-    "n",
-    "<leader>Am",
-    ":AiderAddModifiedFiles<CR>",
-    { noremap = true, silent = true }
-)
 -- require("nvchad.term").toggle { pos = "sp", id = "xz" }
 -- require("nvchad.term").toggle { pos = "float", id = "fa", cmd ='lazygit' }
 -- require("nvchad.term").toggle { pos = "vsp", id = "floo", size = 0.3 }
