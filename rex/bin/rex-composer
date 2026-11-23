@@ -1,0 +1,259 @@
+#!/bin/zsh
+# Type into another Rex pane from this one, so the target pane can stay scrolled up.
+# Usage: rex-composer SESSION_ID BLOCK_ID
+#
+# Enter sends the message and presses Enter in the target. An empty message sends Enter alone.
+# Option+Enter adds a line break; a message with breaks is pasted, so the target gets
+#   real newlines instead of one Enter per line.
+# Pasting an image (Cmd+V) or dropping image files shows [Image #N]; on send the message is
+#   delivered in order, and each image file is pasted into the target at its marker's
+#   position, which omp attaches inline as an image.
+# Up/Down recall earlier messages. Ctrl+D on an empty line closes the composer.
+emulate -L zsh
+setopt extended_glob
+session=${1:?usage: rex-composer SESSION_ID BLOCK_ID}
+block=${2:?usage: rex-composer SESSION_ID BLOCK_ID}
+
+state="${XDG_STATE_HOME:-$HOME/.local/state}/rex-composer"
+mkdir -p "$state"
+HISTFILE="$state/history"
+HISTSIZE=1000
+SAVEHIST=1000
+fc -R "$HISTFILE" 2>/dev/null
+
+# Image files attached so far; [Image #N] refers to images[N], sized image_sizes[N] (WxH).
+typeset -ga images image_sizes
+image_exts=(png jpg jpeg gif webp heic)
+
+# Preview: once a draft has an image, the top preview_rows rows hold a thumbnail and
+# "#N WxH" label per image (Kitty graphics, which Rex supports), and typing moves below.
+# While the strip shows, mouse reporting is on and clicking an image opens it in Preview.
+preview_rows=3
+strip=0          # 1 while the strip is reserved for the current draft
+drawn=''         # what the strip shows now, so it's only redrawn on change
+typeset -ga strip_hits   # "first_col last_col N" per image drawn in the strip
+cell_w=8 cell_h=16
+mouse_on() { printf '\e[?1000h\e[?1006h'; }
+mouse_off() { printf '\e[?1000l\e[?1006l'; }
+
+# Ask the terminal for its cell size in pixels (reply: ESC [ 6 ; height ; width t).
+query_cell_size() {
+	local reply='' ch
+	stty raw -echo
+	printf '\e[16t'
+	while IFS= read -r -s -k 1 -t 0.5 ch; do
+		reply+=$ch
+		[[ $ch == t ]] && break
+	done
+	stty sane
+	if [[ $reply =~ '\[6;([0-9]+);([0-9]+)t' ]] && (( match[1] > 0 && match[2] > 0 )); then
+		cell_h=$match[1] cell_w=$match[2]
+	fi
+}
+
+# Image numbers in the draft, in order, that refer to attached images.
+draft_images() {
+	local rest=$1 n
+	reply=()
+	while [[ $rest =~ '\[Image #([0-9]+)\]' ]]; do
+		n=$match[1]
+		(( n >= 1 && n <= $#images )) && reply+=($n)
+		rest=${rest[MEND+1,-1]}
+	done
+}
+
+# Thumbnails get ids private to this composer, and only those are deleted: a bare `d=A`
+# delete (or a small id like 1) would also wipe or replace other panes' images, such as
+# the chat's charts.
+image_base=$(( 3000000 + ($$ % 1000) * 1000 ))
+shown_ids=()
+delete_seq() {
+	local id
+	REPLY=''
+	for id in $shown_ids; do REPLY+=$'\e_Ga=d,d=I,i='$id$',q=2\e\\'; done
+	shown_ids=()
+}
+delete_images() { delete_seq; printf '%s' "$REPLY"; }
+
+# Draw the strip for the images in the draft; the cursor is left where it was.
+draw_strip() {
+	local n w h cols col=1 label row out i
+	local mid=$(( (preview_rows + 1) / 2 ))
+	strip_hits=()
+	delete_seq
+	out=$'\e7'$REPLY
+	for (( row = 1; row <= preview_rows; row++ )); do out+=$'\e['$row$';1H\e[2K'; done
+	for (( i = 1; i <= $#; i++ )); do
+		n=${@[i]}
+		w=${image_sizes[n]%x*} h=${image_sizes[n]#*x}
+		(( w > 0 && h > 0 )) || { w=4 h=3; }
+		# Width in columns that keeps the image's shape at preview_rows tall.
+		cols=$(( (preview_rows * cell_h * w + h * cell_w - 1) / (h * cell_w) ))
+		(( cols < 1 )) && cols=1
+		(( cols > COLUMNS / 3 )) && cols=$(( COLUMNS / 3 ))
+		label="#$n ${image_sizes[n]:-?}"
+		if (( col + cols + 1 + $#label > COLUMNS )); then
+			out+=$'\e['$mid';'$col$'H\e[2m+'$(( $# - i + 1 ))$' more\e[0m'
+			break
+		fi
+		out+=$'\e[1;'$col'H'
+		shown_ids+=($(( image_base + n )))
+		out+=$'\e_Ga=T,t=f,f=100,q=2,C=1,i='$(( image_base + n ))',r='$preview_rows',c='$cols';'
+		out+=$(print -rn -- "$images[n]" | base64)$'\e\\'
+		out+=$'\e['$mid';'$(( col + cols + 1 ))$'H\e[2m'$label$'\e[0m'
+		strip_hits+=("$col $(( col + cols + $#label )) $n")
+		col=$(( col + cols + 1 + $#label + 3 ))
+	done
+	out+=$'\e8'
+	printf '%s' "$out"
+}
+
+# Runs before every redraw: keeps the strip in step with the draft and pane size.
+preview-sync() {
+	(( strip )) || return 0
+	draft_images "$BUFFER"
+	local key="$LINES $COLUMNS $reply"
+	[[ $key == "$drawn" ]] && return 0
+	drawn=$key
+	draw_strip $reply
+}
+zle -N zle-line-pre-redraw preview-sync
+
+# A mouse report (SGR: ESC [ < button ; col ; row M|m). A left-button press on an
+# image or its label in the strip opens that image; every other report is ignored.
+composer-mouse() {
+	local seq='' ch hit b x y
+	local -a span
+	while read -r -s -k 1 ch; do
+		seq+=$ch
+		[[ $ch == [Mm] ]] && break
+	done
+	[[ $seq =~ '^([0-9]+);([0-9]+);([0-9]+)M$' ]] || return 0
+	b=$match[1] x=$match[2] y=$match[3]
+	(( strip && b == 0 && y <= preview_rows )) || return 0
+	for hit in $strip_hits; do
+		span=(${=hit})
+		if (( x >= span[1] && x <= span[2] )); then
+			open -- "$images[span[3]]" &!
+			return 0
+		fi
+	done
+}
+zle -N composer-mouse
+bindkey '\e[<' composer-mouse
+
+# A paste made only of readable image files (Rex pastes a clipboard image as a temp
+# file path; dropped files arrive as shell-quoted paths) becomes [Image #N] markers.
+# Anything else is inserted as typed.
+composer-paste() {
+	local pasted word file size
+	local -a words markers
+	zle .bracketed-paste pasted
+	words=(${(z)pasted})
+	for word in $words; do
+		file=${~${(Q)word}}
+		if [[ -r $file && -n ${image_exts[(r)${(L)file:e}]} ]]; then
+			size=$(sips -g pixelWidth -g pixelHeight "$file" 2>/dev/null |
+				awk '/pixelWidth/ { w = $2 } /pixelHeight/ { h = $2 } END { if (w && h) print w "x" h }')
+			images+=("$file")
+			image_sizes+=("$size")
+			markers+=("[Image #$#images]")
+		else
+			markers=()
+			break
+		fi
+	done
+	if (( ! $#markers )); then
+		LBUFFER+=$pasted
+		return
+	fi
+	LBUFFER+="${(j: :)markers} "
+	# First image in this draft: push the input down by inserting blank rows above it.
+	# (zle -I would also do it, but it turns terminal echo back on meanwhile, so a
+	# second paste arriving then is printed raw on screen.)
+	if (( ! strip )) && (( LINES > preview_rows + 1 )); then
+		strip=1
+		drawn=''
+		printf '\e7\e[1;1H\e[%dL\e8\e[%dB' $preview_rows $preview_rows
+		mouse_on
+	fi
+}
+zle -N bracketed-paste composer-paste
+
+quit=0
+composer-eof() {
+	if [[ -z $BUFFER ]]; then
+		quit=1
+		zle send-break
+	else
+		zle delete-char-or-list
+	fi
+}
+zle -N composer-eof
+bindkey '^D' composer-eof
+# Option+Enter inserts a real line break.
+bindkey '^[^M' self-insert-unmeta
+
+paste_text() {
+	rex api call -s "$session" block.event "$(jq -nc --arg b "$block" --arg t "$1" \
+		'{block_id: $b, event: {type: "paste", payload: {text: $t}}}')" >/dev/null
+}
+
+# Sends one run of text: a single line is typed, a run with line breaks is pasted.
+send_text() {
+	[[ -z $1 ]] && return 0
+	if [[ $1 == *$'\n'* ]]; then
+		paste_text "$1"
+	else
+		rex send -s "$session" -b "$block" -- "$1"
+	fi
+}
+
+# Text and images go out in the order typed, so each image lands where its [Image #N]
+# marker sat and stays attached to the line it was written on.
+deliver() {
+	local rest=$1 text="" n mend
+	rest=${${rest##[[:space:]]#}%%[[:space:]]#}
+	while [[ $rest =~ '\[Image #([0-9]+)\]' ]]; do
+		n=$match[1] mend=$MEND
+		text+=${rest[1,MBEGIN-1]}
+		if (( n >= 1 && n <= $#images )) && [[ -r $images[n] ]]; then
+			send_text "$text" || return 1
+			text=""
+			paste_text "$images[n]" || return 1
+			# omp loads a pasted image before it reads more input; a paste arriving
+			# meanwhile is taken as keystrokes, so give each image time to load.
+			sleep 0.5
+		else
+			text+=$MATCH
+		fi
+		rest=${rest[mend+1,-1]}
+	done
+	text+=$rest
+	send_text "$text"
+}
+
+trap 'mouse_off; delete_images; print -n "\e[H\e[2J"' EXIT
+query_cell_size
+prompt='› '
+while true; do
+	mouse_off
+	delete_images
+	print -n '\e[H\e[2J\e[3J'
+	strip=0 drawn=''
+	line=''
+	if ! vared -h -p "$prompt" line; then
+		(( quit )) && break
+		continue
+	fi
+	prompt='› '
+	if [[ -n $line ]]; then
+		print -s -- "$line"
+		fc -W "$HISTFILE"
+		if ! deliver "$line"; then
+			prompt='(not sent) › '
+			continue
+		fi
+	fi
+	rex send-key -s "$session" -b "$block" enter || prompt='(Enter not sent) › '
+done

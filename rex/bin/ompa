@@ -1,0 +1,8 @@
+#!/bin/zsh
+# omp in this Rex pane, with a composer split below it (the add_composer action in
+# ~/.config/rex/init.lua). Arguments go to omp. Outside Rex it's plain omp.
+if [[ -n $REX_SESSION && -n $REX_BLOCK ]]; then
+	rex do -s "$REX_SESSION" -b "$REX_BLOCK" add_composer >/dev/null ||
+		print -u2 "ompa: couldn't add the composer; starting omp without it"
+fi
+exec omp "$@"

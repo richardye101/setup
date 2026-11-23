@@ -1,0 +1,31 @@
+providers:
+  # AIOS agent zat-agent-richardye, via the loopback proxy:
+  #   source ~/aios/aios.env && python3 ~/aios/aios-agent-llm.py proxy
+  # The proxy signs each call with the agent token and drops our key, so apiKey is a placeholder.
+  aios-agent:
+    baseUrl: http://127.0.0.1:4019/foundry-openai/v1
+    apiKey: unused
+    api: openai-completions
+    models:
+      - id: gpt-4o
+        name: GPT-4o (AIOS agent)
+        contextWindow: 128000
+        maxTokens: 8192
+      - id: gpt-5.6-sol
+        name: GPT-5.6 Sol (AIOS agent)
+        contextWindow: 128000
+        maxTokens: 8192
+  aios-agent-claude:
+    baseUrl: http://127.0.0.1:4019/azure-foundry
+    apiKey: unused
+    auth: apiKey
+    api: anthropic-messages
+    models:
+      - id: claude-sonnet-5-5
+        name: Claude Sonnet 5.5 (AIOS agent)
+        contextWindow: 1000000
+        maxTokens: 128000
+      - id: claude-haiku-5-5
+        name: Claude Haiku 5.5 (AIOS agent)
+        contextWindow: 100000
+        maxTokens: 128000
